@@ -6,61 +6,52 @@ var client = require('redis').createClient(redisvar);
 
 
 // ---------- START CONFIGURATION ----------
-app.set('port', (process.env.PORT || 5000));
-
-app.use(express.static(__dirname + '/public'));
-
-// views is directory for all template files
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
+app.set('port', (process.env.PORT || 5000));    // default port
+app.use(express.static(__dirname + '/public')); // public static file directory
+app.set('views', __dirname + '/views');         // HTML templates (not used)
+app.set('view engine', 'ejs');                  // Template type (not used)
 // ------------ END CONFIGURATION ----------
 
 
-// ------- START PATH CONFIGURATION --------
-app.get('/slideshow', function(request, response) {
-  var callback = function(err, value) {
-  if (err) return response.json({status: false, err: err});
-  var json = JSON.parse(value);
-  response.json({status: true, message: "also_good_too", value: value, json: json});
-  };
-  var key = 'key:test';
-  client.get(key, callback);
-});
+var logic = {
+  /*
+    Create a new slide show
+  */
+  runSlideshow: function(request, response) {
+    var callback = function(err, value) {
+    if (err) return response.json({status: false, err: err});
+    var json = JSON.parse(value);
+    response.json({status: true, message: "also_good_too", value: value, json: json});
+    };
+    var key = 'key:test';
+    client.get(key, callback);
+  },
+  /*
+    View most recent slideshow
+  */
+  viewSlideshow: function somefunction(request, response) {
+    //response.render('pages/index');
+    var key = 'key:test';
+    var value = {value: Math.random()};
+    var callback = function(err, result) {
+    if (err) return response.json({status: false, err: err});
+      response.json({status: true, message: "all_good", result: result, value: value});
+    };
+    client.set(key, JSON.stringify(value), callback);
+  }
+};
 
-app.get('/grandma', function somefunction(request, response) {
-  //response.render('pages/index');
-  var key = 'key:test';
-  var value = {value: Math.random()};
-  var callback = function(err, result) {
-	if (err) return response.json({status: false, err: err});
-    response.json({status: true, message: "all_good", result: result, value: value});
-  };
-  client.set(key, JSON.stringify(value), callback);
-});
 
-/* app.post('/slideshow', function(request, response) {
-  console.log(request.body);
-  response.json({status: true, params: request.body});
-}); */
+// ------- START ROUTE CONFIGURATION --------
+app.get('/slideshow', logic.runSlideshow);
+app.get('/grandma',   logic.viewSlideshow);
+// --------- END ROUTE CONFIGURATION --------
 
+
+
+// --------------- THE LISTENER -------------
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
-// ------- END PATH CONFIGURATION --------
-
-//display html stuff? idk what this does anymore
-/* var http = require('http'),
-    fs = require('fs');
-
-
-fs.readFile('./public/index.html', function (err, html) {
-    if (err) {
-        throw err;
-    }
-    http.createServer(function(request, response) {
-        response.writeHeader(200, {"Content-Type": "text/html"});
-        response.write(html);
-        response.end();
-    }).listen(8000);
-}); */
+// --------------- THE LISTENER -------------
 
