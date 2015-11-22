@@ -3,6 +3,29 @@
 * public files go in `./public/` and are accessible via the root path
   * e.g. `public/startupweekend` is http://localhost:5000/startupweekend
 
+#### Caregivers's Phone
+
+* Set the image value with: http://localhost:5000/slide/update?index=http://blach.com/
+  * Create a jquery function that runs when the image element is clicked
+    * see: https://api.jquery.com/click/
+
+
+#### Granparent's Tablet
+* Get the current image with: http://localhost:5000/slide/current
+  * Inside the <head><script>...</script></head> of the HTML page (memorybox), add a call to setInterval which will run every N milliseconds (i.e. 1 second is 1000).
+    * see: https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setInterval
+
+*Example:*
+
+    var oldval = '';
+    setInterval(getCurrentImage, 1000);
+
+    function getCurrentImage() {
+      // 1. call to http://localhost:5000/slide/current and set newval
+      // 2. compare newval to oldval. If not equal, switch image. If equal, do nothing.
+      // 3. set oldval to newval.
+    }
+
 
 ---
 

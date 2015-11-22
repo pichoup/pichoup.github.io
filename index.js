@@ -83,7 +83,7 @@ var uriLogic = {
       response.json({status: true, index: value, result: result});
     };
     var key = KEY_SLIDESHOW_DEMO_INDEX;
-    var value = 0;
+    var value = 0; // default value (can be changed)
 
     if (request.query && request.query.index)
       value = request.query.index;
@@ -106,9 +106,9 @@ var uriLogic = {
 
 
 // ------- START ROUTE CONFIGURATION --------
-app.get ('/slideshow', uriLogic.runSlideshow);
-app.post('/slideshow', uriLogic.runSlideshow);
-app.get ('/grandma',   uriLogic.viewSlideshow);
+app.get ('/slideshow', uriLogic.runSlideshow);  // wip - not used for demo
+app.post('/slideshow', uriLogic.runSlideshow);  // wip - not used for demo
+app.get ('/grandma',   uriLogic.viewSlideshow); // wip - not used for demo
 app.get ('/slide/update',  uriLogic.updateSlideIndex); // GET  /slide/update?index=NUM (for testing only)
 app.post('/slide/update',  uriLogic.updateSlideIndex); // POST /slide/update?index=NUM
 app.get ('/slide/current', uriLogic.currentSlideIndex);// GET  /slide/current
