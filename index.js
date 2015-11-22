@@ -19,8 +19,11 @@ var uriLogic = {
     Create a new slide show
   */
   runSlideshow: function(request, response) {
-    var key = 'key:test';
-    var value = {value: Math.random()};
+    var entropy = ['slideshow', Math.random()];
+    var slideshowId = helperFunction.createSHA1(entropy);
+    var keyDefinition = ['careageous', 'slideshow', slideshowId];
+    var key = helperFunction.createRedisKey(keyDefinition);
+    var value = {slideshowId: slideshowId};
     var callback = function(err, result) {
     if (err) return response.json({status: false, err: err});
       response.json({status: true, message: "all_good", result: result, value: value});
@@ -43,10 +46,19 @@ var uriLogic = {
 };
 
 var helperFunction = {
+  createRedisKey: function(values) {
+    var key = values.join(':');
+    console.log('createRedisKey', values, key);
+    return key;
+  },
   createSHA1: function(entropy) {
     var current_date = (new Date()).valueOf().toString();
     var random = Math.random().toString();
-    return crypto.createHash('sha1').update(current_date + random + entropy).digest('hex');
+    entropy.push(current_date);
+    entropy.push(random);
+    var inputStr = entropy.join(':');
+    console.log('createSHA1', entropy, inputStr);
+    return crypto.createHash('sha1').update(inputStr).digest('hex');
   }
 }
 
