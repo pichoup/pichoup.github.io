@@ -43,8 +43,9 @@ var logic = {
 
 
 // ------- START ROUTE CONFIGURATION --------
-app.get('/slideshow', logic.runSlideshow);
-app.get('/grandma',   logic.viewSlideshow);
+app.get ('/slideshow', logic.runSlideshow);
+app.post('/slideshow', logic.runSlideshow);
+app.get ('/grandma',   logic.viewSlideshow);
 // --------- END ROUTE CONFIGURATION --------
 
 
