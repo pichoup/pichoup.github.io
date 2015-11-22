@@ -1,3 +1,11 @@
+# Careageous
+
+* public files go in `./public/` and are accessible via the root path
+  * e.g. `public/startupweekend` is http://localhost:5000/startupweekend
+
+
+---
+
 # node-js-getting-started
 
 A barebones Node.js app using [Express 4](http://expressjs.com/).
