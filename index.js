@@ -19,18 +19,6 @@ var uriLogic = {
     Create a new slide show
   */
   runSlideshow: function(request, response) {
-    var callback = function(err, value) {
-      if (err) return response.json({status: false, err: err});
-      var json = JSON.parse(value);
-      response.json({status: true, message: "also_good_too", value: value, json: json});
-    };
-    var key = 'key:test';
-    client.get(key, callback);
-  },
-  /*
-    View most recent slideshow
-  */
-  viewSlideshow: function somefunction(request, response) {
     var key = 'key:test';
     var value = {value: Math.random()};
     var callback = function(err, result) {
@@ -38,6 +26,19 @@ var uriLogic = {
       response.json({status: true, message: "all_good", result: result, value: value});
     };
     client.set(key, JSON.stringify(value), callback);
+
+  },
+  /*
+    View most recent slideshow
+  */
+  viewSlideshow: function somefunction(request, response) {
+    var callback = function(err, value) {
+      if (err) return response.json({status: false, err: err});
+      var json = JSON.parse(value);
+      response.json({status: true, message: "also_good_too", value: value, json: json});
+    };
+    var key = 'key:test';
+    client.get(key, callback);
   }
 };
 
