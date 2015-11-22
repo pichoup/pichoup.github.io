@@ -1,4 +1,3 @@
-var crypto = require('crypto');
 var express = require('express');
 var app = express();
 var redisvar = process.env.REDIS_URL || "redis://h:p4uj069431mqe8a04m1mk6rniqc@ec2-54-83-9-36.compute-1.amazonaws.com:21039";
