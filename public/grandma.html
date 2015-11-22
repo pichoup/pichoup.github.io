@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Hello Grandma!</h1>
+<p>This is what you get to see!</p>
+<a href="index.html">back</a><br>
+<img id="image" src="images/birthday.jpg" alt="image is not available" style="width:400px;">
+<script>
+var imgnum = 1;
+function retrievephoto() {
+	if (imgnum==1) {
+		document.getElementById("image").src = "images/birthday.jpg";
+	}
+	if (imgnum==2) {
+		document.getElementById("image").src = "images/cat.jpg";
+	}
+	if (imgnum==3) {
+		document.getElementById("image").src = "images/dog.jpg";
+	}
+	if (imgnum==4) {
+		document.getElementById("image").src = "images/grapes.jpg";
+	}
+	if (imgnum==5) {
+		document.getElementById("image").src = "images/recordplayer.jpg";
+	}
+}
+
+</script>
+
+<!-- <img src="happyface.png" alt="no_image_for_you">
+<img src="sadface.jpg" alt="no_image_for_you"> -->
+</body>
+</html>
