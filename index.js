@@ -34,13 +34,15 @@ var helperFunction = {
 
 
 var DEFAULT_SLIDESHOW = {
-  // REPLACE WITH HARDCODED JSON SLIDESHOW
+  // REPLACE WITH HARDCODED JSON SLIDESHOW (list of images etc)
 };
-var KEY_SLIDESHOW = helperFunction.createRedisKey(['careageous', 'slideshows', 'latest']);
+
+var KEY_SLIDESHOW_LATEST = helperFunction.createRedisKey(['careageous', 'slideshows', 'latest']);
+var KEY_SLIDESHOW_DEMO_INDEX = helperFunction.createRedisKey(['careageous', 'slideshow', 'demo', 'index']);
 
 var uriLogic = {
   /*
-    Create a new slide show (work in progress)
+    Create a new slide show (work in progress - not used in SUW demo)
   */
   runSlideshow: function(request, response) {
     var entropy = ['slideshow', Math.random()];
@@ -51,13 +53,13 @@ var uriLogic = {
     slideshow.sid = slideshowId;
     var callback = function(err, result) {
       if (err) return response.json({status: false, err: err});
-      client.set(KEY_SLIDESHOW, slideshowId);
+      client.set(KEY_SLIDESHOW_LATEST, slideshowId);
       response.json({status: true, slideshow: slideshow});
     };
     client.set(key, JSON.stringify(slideshow), callback);
   },
   /*
-    View most recent slideshow (work in progress)
+    View most recent slideshow (work in progress - not used in SUW demo)
   */
   viewSlideshow: function somefunction(request, response) {
     var getSlideshow = function(err, value) {
@@ -71,8 +73,34 @@ var uriLogic = {
       var key = helperFunction.createRedisKey(keyDefinition);
       client.get(key, getSlideshow);
     };
-    var key = KEY_SLIDESHOW;
+    var key = KEY_SLIDESHOW_LATEST;
     client.get(key, getLatestSlideshowKey);
+  },
+
+  updateSlideIndex: function(request, response) {
+    var setSlideshowIndex = function(err, result) {
+      if (err) return response.json({status: false, err: err});
+      response.json({status: true, index: value, result: result});
+    };
+    var key = KEY_SLIDESHOW_DEMO_INDEX;
+    var value = 0;
+
+    if (request.query && request.query.index)
+      value = request.query.index;
+
+    if (request.body && request.body.index)
+      value = request.body.index;
+
+    client.set(key, value, setSlideshowIndex);
+  },
+
+  currentSlideIndex: function(request, response) {
+    var getSlideshowIndex = function(err, result) {
+      if (err) return response.json({status: false, err: err});
+      response.json({status: true, index: result || 0});
+    };
+    var key = KEY_SLIDESHOW_DEMO_INDEX;
+    client.get(key, getSlideshowIndex);
   }
 };
 
@@ -81,6 +109,9 @@ var uriLogic = {
 app.get ('/slideshow', uriLogic.runSlideshow);
 app.post('/slideshow', uriLogic.runSlideshow);
 app.get ('/grandma',   uriLogic.viewSlideshow);
+app.get ('/slide/update',  uriLogic.updateSlideIndex); // GET  /slide/update?index=NUM (for testing only)
+app.post('/slide/update',  uriLogic.updateSlideIndex); // POST /slide/update?index=NUM
+app.get ('/slide/current', uriLogic.currentSlideIndex);// GET  /slide/current
 // --------- END ROUTE CONFIGURATION --------
 
 
